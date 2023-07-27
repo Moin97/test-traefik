@@ -37,13 +37,16 @@ services:
       - coolify
       - coolify-infra
     labels:
-      # Define frontend and backend services
-      - "traefik.http.routers.my-service.rule=Host(`https://test.securih.com`)"
+      # Configure the HTTP Provider Mapper
+      - "traefik.http.routers.my-service.rule=Host('test.securih.com')"
       - "traefik.http.routers.my-service.entrypoints=web"
       - "traefik.http.services.my-service.loadbalancer.server.port=80"
-      # Add the Retry middleware with a 10-second delay
+      - "traefik.http.services.my-service.loadbalancer.sticky=true"
+      # Add the Retry middleware with a delay only on 503 Service Unavailable errors
       - "traefik.http.middlewares.my-retry-middleware.retry.attempts=1"
-      - "traefik.http.middlewares.my-retry-middleware.retry.delay=10s"
+      - "traefik.http.middlewares.my-retry-middleware.retry.retryOn=503"
+      - "traefik.http.middlewares.my-retry-middleware.retry.retryOn=404"
+      - "traefik.http.middlewares.my-retry-middleware.retry.after=10s"
 networks:
   coolify:
     external: true
