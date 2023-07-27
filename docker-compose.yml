@@ -36,6 +36,14 @@ services:
       # Hooks itself into the coolify network that your Traefik instance should be running on
       - coolify
       - coolify-infra
+    labels:
+      # Define frontend and backend services
+      - "traefik.http.routers.my-service.rule=Host(`https://test.securih.com`)"
+      - "traefik.http.routers.my-service.entrypoints=web"
+      - "traefik.http.services.my-service.loadbalancer.server.port=80"
+      # Add the Retry middleware with a 10-second delay
+      - "traefik.http.middlewares.my-retry-middleware.retry.attempts=1"
+      - "traefik.http.middlewares.my-retry-middleware.retry.delay=10s"
 networks:
   coolify:
     external: true
