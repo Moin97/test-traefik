@@ -42,6 +42,7 @@ services:
       - "traefik.http.routers.my-service.entrypoints=web"
       - "traefik.http.services.my-service.loadbalancer.server.port=80"
       - "traefik.http.services.my-service.loadbalancer.server.port=443"
+      - "traefik.http.services.my-service.loadbalancer.server.port=502"
       - "traefik.http.services.my-service.loadbalancer.sticky=true"
       # Add the Retry middleware with a delay only on 503 Service Unavailable errors
       - "traefik.http.middlewares.my-retry-middleware.retry.attempts=1"
