@@ -1,4 +1,4 @@
-TRAEFIK_MAPPER_BASE_ENDPOINT=https://coolify.example.io/webhooks/traefik/main.json
+TRAEFIK_MAPPER_BASE_ENDPOINT=https://43.204.216.218:3000//webhooks/traefik/main.json
 
 TRAEFIK_MAPPER_NEW_HTTP_ENTRYPOINT=http
 TRAEFIK_MAPPER_NEW_HTTPS_ENTRYPOINT=https
