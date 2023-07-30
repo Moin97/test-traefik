@@ -1,0 +1,8 @@
+http:
+  middlewares:
+    my-retry-middleware:
+      retry:
+        attempts: 2
+        initialInterval: 100ms
+        maxInterval: 1s
+        retryOn: 502

@@ -25,17 +25,16 @@ services:
 
       # Remove coolify itself from the list of services
       - TRAEFIK_MAPPER_FILTER_COOLIFY=true
-      # # Remove www redirect middleware from the list of middlewares
-      # - TRAEFIK_MAPPER_FILTER_WWW_MIDDLEWARE=true
-      # # Remove all http routes from the list of routes
-      # - TRAEFIK_MAPPER_FILTER_HTTP_ROUTERS=true
-      # # Remove all www routes from the list of routes
-      # - TRAEFIK_MAPPER_FILTER_WWW_ROUTERS=true
+      # Remove www redirect middleware from the list of middlewares
+      - TRAEFIK_MAPPER_FILTER_WWW_MIDDLEWARE=true
+      # Remove all http routes from the list of routes
+      - TRAEFIK_MAPPER_FILTER_HTTP_ROUTERS=true
+      # Remove all www routes from the list of routes
+      - TRAEFIK_MAPPER_FILTER_WWW_ROUTERS=true
 
     networks:
       # Hooks itself into the coolify network that your Traefik instance should be running on
       - coolify
-      - coolify-infra
     labels:
       # Configure the HTTP Provider Mapper
       - "traefik.http.routers.my-service.rule=Host('test.securih.com')"
@@ -44,11 +43,14 @@ services:
       - "traefik.http.services.my-service.loadbalancer.server.port=443"
       - "traefik.http.services.my-service.loadbalancer.sticky=true"
       # Add the Retry middleware with a delay only on 503 Service Unavailable errors
+      - "traefik.http.middlewares.my-retry-middleware.retry.initialInterval=100ms"
+      - "traefik.http.middlewares.my-retry-middleware.retry.maxInterval=1s"
+      - "traefik.http.middlewares.my-retry-middleware.retry.retryOn=502"
       - "traefik.http.middlewares.my-retry-middleware.retry.attempts=1"
       - "traefik.http.middlewares.my-retry-middleware.retry.retryOn=503"
-      - "traefik.http.middlewares.my-retry-middleware.retry.retryOn=502"
       - "traefik.http.middlewares.my-retry-middleware.retry.retryOn=404"
       - "traefik.http.middlewares.my-retry-middleware.retry.after=10s"
+      
 networks:
   coolify:
     external: true
